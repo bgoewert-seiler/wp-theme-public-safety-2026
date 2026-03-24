@@ -1,0 +1,52 @@
+{
+  "name": "public-safety-2026-theme",
+  "version": "1.0.0",
+  "description": "WordPress block theme for public safety organizations",
+  "author": "Your Name",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:update": "wp-env start --update",
+    "env:restart": "wp-env start --update",
+    "env:destroy": "wp-env destroy",
+    "env:clean": "wp-env clean all",
+    "env:reset": "npm run env:destroy && npm run env:start",
+    "env:cache:clear": "wp-env run cli wp cache flush && wp-env run cli wp rewrite flush && echo 'Cache cleared.'",
+    "env:log": "less +F $(wp-env install-path 2> /dev/null)/WordPress/wp-content/debug.log",
+    "env:log:tail": "tail -100 $(wp-env install-path 2> /dev/null)/WordPress/wp-content/debug.log",
+    "env:log:clear": "truncate -s 0 $(wp-env install-path 2> /dev/null)/WordPress/wp-content/debug.log && echo 'Log cleared.'",
+    "env:path": "wp-env install-path",
+    "theme:check": "wp-env run cli wp theme check wp-theme-public-safety-2026",
+    "theme:activate": "wp-env run cli wp theme activate wp-theme-public-safety-2026",
+    "theme:info": "wp-env run cli wp theme get wp-theme-public-safety-2026",
+    "setup:homepage": "npm run setup:create-homepage && npm run setup:set-homepage",
+    "setup:create-homepage": "wp-env run cli wp post create --post_type=page --post_status=publish --post_title='Home' --post_name=home",
+    "setup:set-homepage": "wp-env run cli wp option update show_on_front page && wp-env run cli wp option update page_on_front $(wp-env run cli wp post list --post_type=page --name=home --field=ID --format=ids)",
+    "browser:open": "bash -c 'if grep -qi microsoft /proc/version 2>/dev/null; then explorer.exe https://localhost:8443; elif [[ $OSTYPE == darwin* ]]; then open https://localhost:8443; else xdg-open https://localhost:8443; fi'",
+    "browser:chrome": "bash -c 'if grep -qi microsoft /proc/version 2>/dev/null; then cmd.exe /c start chrome https://localhost:8443; elif [[ \"$OSTYPE\" == \"darwin\"* ]]; then open -a \"Google Chrome\" https://localhost:8443; else google-chrome https://localhost:8443; fi'",
+    "browser:firefox": "bash -c 'if grep -qi microsoft /proc/version 2>/dev/null; then cmd.exe /c start firefox https://localhost:8443; elif [[ \"$OSTYPE\" == \"darwin\"* ]]; then open -a Firefox https://localhost:8443; else firefox https://localhost:8443; fi'",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:header": "playwright test tests/header.spec.js",
+    "test:install": "playwright install chromium",
+    "wp:cli": "wp-env run cli wp",
+    "wp:shell": "wp-env run cli bash"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@wordpress/env": "file:../gutenberg/packages/env"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "block-theme",
+    "full-site-editing",
+    "public-safety"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/public-safety-2026.git"
+  }
+}
