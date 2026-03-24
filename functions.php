@@ -32,6 +32,9 @@ function public_safety_2026_setup() {
 	// Add support for editor styles
 	add_theme_support( 'editor-styles' );
 
+	// Enqueue editor styles
+	add_editor_style( 'assets/css/theme.css' );
+
 	// Add support for block templates
 	add_theme_support( 'block-templates' );
 
