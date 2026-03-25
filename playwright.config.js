@@ -8,6 +8,9 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
 	testDir: './tests',
 
+	// Output directory for test artifacts (screenshots, videos, traces)
+	outputDir: '.local/playwright/test-results',
+
 	// Maximum time one test can run
 	timeout: 30 * 1000,
 
@@ -17,8 +20,8 @@ module.exports = defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? 1 : undefined,
 
-	// Reporter to use
-	reporter: 'html',
+	// Reporter to use with custom output directory
+	reporter: [['html', { outputFolder: '.local/playwright/html-report' }]],
 
 	// Shared settings for all projects
 	use: {

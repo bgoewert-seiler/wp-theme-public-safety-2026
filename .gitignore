@@ -29,6 +29,10 @@ Thumbs.db
 # Local testing artifacts (screenshots, debug files)
 .local/
 
+# Playwright test results (configured to use .local/playwright/)
+test-results/
+playwright-report/
+
 # Build artifacts (if you add build process later)
 build/
 dist/
