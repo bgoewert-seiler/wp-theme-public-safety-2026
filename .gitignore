@@ -26,6 +26,9 @@ Thumbs.db
 *.bak
 *.log
 
+# Local testing artifacts (screenshots, debug files)
+.local/
+
 # Build artifacts (if you add build process later)
 build/
 dist/
