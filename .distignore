@@ -1,0 +1,58 @@
+# Development files
+.git
+.github
+.vscode
+.idea
+.local
+.sisyphus
+node_modules
+vendor-dev
+tests
+test-results
+playwright-report
+.playwright-mcp
+.claude
+
+# Config files
+.distignore
+.gitignore
+.gitattributes
+.editorconfig
+.phpcs.xml.dist
+phpunit.xml.dist
+phpstan.neon.dist
+.wp-env.json
+playwright.config.js
+webpack.config.js
+
+# Lock files
+bun.lock
+package-lock.json
+composer.lock
+
+# Documentation
+README.md
+CHANGELOG.md
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+
+# Logs
+*.log
+debug.log
+
+# Screenshots (dev artifacts)
+*.png
+!screenshot.png
+
+# Source files (blocks already compiled to build/)
+blocks/**/*.js
+blocks/**/*.jsx
+blocks/**/*.css
+!blocks/**/block.json
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~

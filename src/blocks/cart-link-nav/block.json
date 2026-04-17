@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "seiler-2026/cart-link-nav",
+	"title": "Cart Link (Navigation)",
+	"category": "woocommerce",
+	"icon": "cart",
+	"description": "WooCommerce cart link that can be inserted in navigation menus",
+	"keywords": ["cart", "woocommerce", "shop", "navigation"],
+	"textdomain": "seiler-2026",
+	"parent": ["core/navigation"],
+	"supports": {
+		"html": false,
+		"align": false
+	},
+	"attributes": {
+		"showCount": {
+			"type": "boolean",
+			"default": true
+		},
+		"showIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"showText": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

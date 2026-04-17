@@ -1,0 +1,20 @@
+{
+  "name": "seilerinstrument/wp-theme-seiler-2026",
+  "description": "WordPress block theme for Seiler Instrument & Mfg. Co., Inc.",
+  "type": "wordpress-theme",
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "SeilerInstrument\\Themes\\Seiler2026\\": "includes/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "classmap-authoritative": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

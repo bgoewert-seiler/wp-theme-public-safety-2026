@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "seiler-2026/customer-account-nav",
+	"title": "Customer Account (Navigation)",
+	"category": "widgets",
+	"icon": "admin-users",
+	"description": "Customer account link with dropdown menu for navigation",
+	"keywords": ["account", "user", "login", "navigation"],
+	"textdomain": "seiler-2026",
+	"parent": ["core/navigation"],
+	"supports": {
+		"html": false,
+		"align": false
+	},
+	"attributes": {
+		"showIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"showText": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDropdown": {
+			"type": "boolean",
+			"default": true
+		},
+		"loggedOutText": {
+			"type": "string",
+			"default": "My Account"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

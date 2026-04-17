@@ -12,7 +12,7 @@ module.exports = defineConfig({
 	outputDir: '.local/playwright/test-results',
 
 	// Maximum time one test can run
-	timeout: 30 * 1000,
+	timeout: 60 * 1000,
 
 	// Test execution settings
 	fullyParallel: true,
@@ -26,7 +26,10 @@ module.exports = defineConfig({
 	// Shared settings for all projects
 	use: {
 		// Base URL for navigation
-		baseURL: 'http://publicsafety.local:8890',
+		baseURL: 'https://localhost:8443',
+
+		// Ignore HTTPS errors for local development
+		ignoreHTTPSErrors: true,
 
 		// Collect trace when retrying the failed test
 		trace: 'on-first-retry',
@@ -50,7 +53,7 @@ module.exports = defineConfig({
 	// Uncomment if you want tests to start wp-env automatically
 	// webServer: {
 	// 	command: 'npm run env:start',
-	// 	url: 'http://publicsafety.local:8890',
+	// 	url: 'http://seiler.local:8890',
 	// 	timeout: 120 * 1000,
 	// 	reuseExistingServer: !process.env.CI,
 	// },

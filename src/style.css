@@ -1,0 +1,23 @@
+/*
+Theme Name: Seiler 2026
+Theme URI: https://seilersolutions.com
+Author: Seiler Solutions
+Author URI: https://seilersolutions.com
+Description: A modern WordPress FSE block theme for Seiler Instrument & Mfg. Co., Inc. Features full site editing, custom block patterns, WooCommerce integration, and Splide Carousel for dynamic content displays.
+Requires at least: 6.4
+Tested up to: 6.9
+Requires PHP: 8.0
+Version: 1.2.9
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: seiler-2026
+Tags: block-theme, full-site-editing, custom-patterns, business, corporate
+
+Seiler 2026 WordPress Theme, (C) 2026
+Seiler 2026 is distributed under the terms of the GNU GPL.
+*/
+
+/*
+ * Additional base styles are loaded via theme.json and assets/css/theme.css
+ * This file primarily serves as the theme metadata container.
+ */

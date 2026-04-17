@@ -1,0 +1,96 @@
+.customer-account-nav-block {
+	display: inline-flex;
+	align-items: center;
+}
+
+.customer-account-nav {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: inherit;
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.2s ease;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	text-transform: inherit;
+}
+
+.customer-account-nav:hover {
+	color: inherit;
+}
+
+.customer-account-nav .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.customer-account-nav .dashicons-arrow-down-alt2 {
+	font-size: 12px;
+	width: 12px;
+	height: 12px;
+	transition: transform 0.2s ease;
+}
+
+.customer-account-nav.is-open .dashicons-arrow-down-alt2 {
+	transform: rotate(180deg);
+}
+
+.customer-account-nav .account-text {
+	font-weight: inherit;
+}
+
+/* Dropdown Menu */
+.customer-account-dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	margin-top: 8px;
+	min-width: 200px;
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-10px);
+	transition: all 0.2s ease;
+	z-index: 1000;
+}
+
+.customer-account-nav.is-open .customer-account-dropdown {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.customer-account-dropdown a {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 16px;
+	color: #333;
+	text-decoration: none;
+	font-size: 14px;
+	transition: background-color 0.2s ease;
+}
+
+.customer-account-dropdown a:hover {
+	background-color: #f5f5f5;
+	color: var(--wp--preset--color--primary, #0475bc);
+}
+
+.customer-account-dropdown a .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.customer-account-dropdown .separator {
+	height: 1px;
+	background: #eee;
+	margin: 4px 0;
+}

@@ -1,0 +1,47 @@
+/* Cart Link Nav Block Styles */
+
+.cart-link-nav-block {
+	display: inline-flex;
+}
+
+.cart-link-nav {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: var(--wp--preset--color--primary, #0475BC);
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 900;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+.cart-link-nav:hover {
+	color: var(--wp--preset--color--accent, #FDBA4D);
+}
+
+.cart-link-nav .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.cart-link-nav .cart-text {
+	font-size: 14px;
+}
+
+.cart-link-nav .cart-count {
+	font-size: 12px;
+	font-weight: 700;
+}
+
+/* Inside navigation blocks */
+.wp-block-navigation .cart-link-nav-block {
+	margin: 0;
+}
+
+.wp-block-navigation .cart-link-nav {
+	padding: 0;
+	background: none;
+	border: none;
+}

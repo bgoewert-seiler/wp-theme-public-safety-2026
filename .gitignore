@@ -9,6 +9,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+bun-debug.log*
 
 # OS files
 .DS_Store
@@ -33,10 +34,19 @@ Thumbs.db
 test-results/
 playwright-report/
 
-# Build artifacts (if you add build process later)
-build/
-dist/
+# Playwright MCP snapshots and screenshots
+.playwright-mcp/
+/*.png
 
-# Package manager lock files (optional - include if you want)
-# package-lock.json
-# yarn.lock
+# Claude Code agent data
+.claude/
+
+# Build artifacts (root build dir only, src/build is part of the theme)
+/build/
+dist/
+blocks/**/index.asset.php
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+# bun.lock is tracked (Bun is the primary package manager)

@@ -1,4 +1,4 @@
-# Public Safety 2026 WordPress Theme
+# Seiler 2026 WordPress Theme
 
 A modern WordPress block theme designed for public safety organizations. Features full site editing (FSE), custom block patterns, and integration with Splide Carousel for dynamic content displays.
 
@@ -26,10 +26,10 @@ A modern WordPress block theme designed for public safety organizations. Feature
 ### Method 1: Manual Installation
 
 1. Download the theme files
-2. Upload the entire `public-safety-2026` folder to `/wp-content/themes/` directory
+2. Upload the entire `wp-theme-seiler-2026` folder to `/wp-content/themes/` directory
 3. Log in to your WordPress admin panel
 4. Navigate to **Appearance → Themes**
-5. Find "Public Safety 2026" and click **Activate**
+5. Find "Seiler 2026" and click **Activate**
 
 ### Method 2: ZIP Upload
 
@@ -82,37 +82,37 @@ Navigate to **Appearance → Editor** to access the Site Editor:
 ### Hero Slider
 Full-width hero section with background image, headline, and CTA buttons. Add multiple instances and use Splide Carousel to create an auto-rotating slider.
 
-**Location:** Public Safety - Hero Sections
+**Location:** Seiler - Hero Sections
 
 ### Three Feature Columns
 Three-column feature section with icons, headings, and descriptions on a blue background.
 
-**Location:** Public Safety - Features
+**Location:** Seiler - Features
 
 ### Industries Grid
 8-item grid showcasing different industry sectors with images and overlay headings.
 
-**Location:** Public Safety - Content Sections
+**Location:** Seiler - Content Sections
 
 ### Call to Action Banner
 Full-width promotional banner with heading, description, and call-to-action button.
 
-**Location:** Public Safety - Call to Action
+**Location:** Seiler - Call to Action
 
 ### Partner Logos
 Grid of partner logos with grayscale hover effects. Use Splide Carousel to create an auto-scrolling carousel.
 
-**Location:** Public Safety - Content Sections
+**Location:** Seiler - Content Sections
 
 ### Testimonials
 Three customer testimonial cards with quotes and attribution. Use Splide Carousel to create a testimonial slider.
 
-**Location:** Public Safety - Testimonials
+**Location:** Seiler - Testimonials
 
 ### Contact Section
 Two-column layout with contact form placeholder and quick links on a dark background.
 
-**Location:** Public Safety - Content Sections
+**Location:** Seiler - Content Sections
 
 ## 🎨 Customization
 
@@ -226,7 +226,7 @@ The theme includes the following templates:
 ### File Structure
 
 ```
-public-safety-2026/
+wp-theme-seiler-2026/
 ├── assets/
 │   ├── css/
 │   │   └── theme.css          # Custom styles

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "seiler-2026/search-overlay",
+  "title": "Search with Overlay",
+  "category": "widgets",
+  "icon": "search",
+  "description": "Search form that opens in an overlay",
+  "keywords": [
+    "search",
+    "overlay",
+    "flyout"
+  ],
+  "textdomain": "seiler-2026",
+  "parent": [
+    "core/navigation"
+  ],
+  "supports": {
+    "html": false,
+    "align": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "placeholder": {
+      "type": "string",
+      "default": "Search..."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Search"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}

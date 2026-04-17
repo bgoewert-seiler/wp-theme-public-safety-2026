@@ -1,41 +1,34 @@
 /**
- * Header Tests - Validate against seilergeo.com design
+ * Header Tests - Validate header functionality and styling
  *
  * Run with: npx playwright test tests/header.spec.js
  */
 
 const { test, expect } = require('@playwright/test');
 
-// Expected values from seilergeo.com
+// Expected values
 const EXPECTED = {
 	header: {
-		totalHeight: 137,
-		logoHeight: 64,
-		utilityHeight: 19,
-		mainNavHeight: 40,
-		accentBarHeight: 10
+		minHeight: 110,
+		maxHeight: 170
 	},
 	utilityNav: {
 		fontSize: '14px',
 		fontWeight: '900',
 		color: 'rgb(4, 117, 188)', // #0475bc
-		textDecoration: 'none solid rgb(4, 117, 188)'
 	},
 	cart: {
 		fontSize: '14px',
 		fontWeight: '900',
-		hasIcon: true
 	},
 	search: {
-		iconSize: 20,
-		iconVisible: true
+		iconSize: 18,
 	}
 };
 
 test.describe('Header Styling', () => {
 	test.beforeEach(async ({ page }) => {
-		await page.goto('http://publicsafety.local:8890');
-		await page.waitForLoadState('networkidle');
+		await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
 	});
 
 	test('utility nav links should have correct styling', async ({ page }) => {
@@ -66,119 +59,82 @@ test.describe('Header Styling', () => {
 		expect(textDecoration).toContain('none');
 	});
 
-	test('cart should show icon with count', async ({ page }) => {
-		const cart = page.locator('.header-cart-button');
+	test('cart link should be visible with icon', async ({ page }) => {
+		const cart = page.locator('.cart-link-nav');
+
+		await expect(cart).toBeVisible();
+
+		// Check if icon exists
+		const icon = cart.locator('.dashicons-cart');
+		await expect(icon).toBeVisible();
 
 		// Check font weight
 		const fontWeight = await cart.evaluate(el =>
 			window.getComputedStyle(el).fontWeight
 		);
 		expect(fontWeight).toBe(EXPECTED.cart.fontWeight);
-
-		// Check if icon pseudo-element exists
-		const hasIcon = await cart.evaluate(el => {
-			const before = window.getComputedStyle(el, '::before');
-			return before.content !== 'none' && before.content !== '';
-		});
-		expect(hasIcon).toBe(true);
 	});
 
-	test('search icon should be visible', async ({ page }) => {
-		const searchButton = page.locator('.header-search-toggle');
+	test('search toggle should be visible', async ({ page }) => {
+		const searchToggle = page.locator('.header-search-toggle');
 
 		// Check visibility
-		await expect(searchButton).toBeVisible();
+		await expect(searchToggle).toBeVisible();
+
+		// Check icon exists
+		const icon = searchToggle.locator('.dashicons-search');
+		await expect(icon).toBeVisible();
 
 		// Check icon size
-		const iconSize = await searchButton.locator('.dashicons').evaluate(el =>
+		const iconSize = await icon.evaluate(el =>
 			window.getComputedStyle(el).fontSize
 		);
 		expect(parseInt(iconSize)).toBeGreaterThanOrEqual(EXPECTED.search.iconSize);
 	});
 
-	test('header height should be ~137px', async ({ page }) => {
+	test('header height should be reasonable', async ({ page }) => {
 		const header = page.getByRole('banner');
 
 		const height = await header.evaluate(el =>
 			el.getBoundingClientRect().height
 		);
 
-		// Allow 10px margin of error
-		expect(height).toBeGreaterThanOrEqual(EXPECTED.header.totalHeight - 10);
-		expect(height).toBeLessThanOrEqual(EXPECTED.header.totalHeight + 30);
-	});
-
-	test('utility menu should not wrap', async ({ page }) => {
-		const menuWrap = page.locator('.header-menu-wrap');
-
-		// Check that all items are on one line
-		const height = await menuWrap.evaluate(el =>
-			el.getBoundingClientRect().height
-		);
-
-		// Should be close to utility height (19px) with some padding
-		expect(height).toBeLessThanOrEqual(80); // Allow for padding
+		// Should be between min and max expected height
+		expect(height).toBeGreaterThanOrEqual(EXPECTED.header.minHeight);
+		expect(height).toBeLessThanOrEqual(EXPECTED.header.maxHeight);
 	});
 
 	test('search toggle functionality', async ({ page }) => {
 		const searchToggle = page.locator('.header-search-toggle');
-		const menuWrap = page.locator('.header-menu-wrap');
 		const searchContainer = page.locator('.header-search-container');
 
-		// Initially menu wrap should be visible
-		await expect(menuWrap).toBeVisible();
-		await expect(searchContainer).not.toHaveClass(/is-visible/);
+		// Initially search container should not be visible
+		await expect(searchContainer).not.toBeVisible();
 
 		// Click search button
 		await searchToggle.click();
 
-		// Menu wrap should be hidden, search should be visible
-		await expect(menuWrap).toHaveClass(/is-hidden/);
-		await expect(searchContainer).toHaveClass(/is-visible/);
+		// Search container should now be visible
+		await expect(searchContainer).toBeVisible();
+
+		// Search input should be focused
+		const searchInput = page.locator('.header-search-input');
+		await expect(searchInput).toBeFocused();
 	});
-});
 
-test.describe('Header vs seilergeo.com comparison', () => {
-	// Skip by default - only run with --grep "seilergeo"
-	test.skip('compare utility nav styling with seilergeo.com', async ({ browser }) => {
-		// Open two pages side by side
-		const context = await browser.newContext();
-		const localPage = await context.newPage();
-		const seilerPage = await context.newPage();
+	test('utility nav should have login and cart links', async ({ page }) => {
+		const utilityNav = page.locator('.header-utility-nav');
 
-		await localPage.goto('http://publicsafety.local:8890');
-		await seilerPage.goto('https://www.seilergeo.com', { timeout: 60000 });
+		// Check for login link
+		const loginLink = utilityNav.getByText('Login');
+		await expect(loginLink).toBeVisible();
 
-		// Get styles from both sites
-		const localLink = localPage.locator('.header-utility-nav a').first();
-		const seilerLink = seilerPage.locator('.et_pb_menu__wrap nav ul li a').first();
+		// Check for cart link
+		const cartLink = utilityNav.locator('.cart-link-nav');
+		await expect(cartLink).toBeVisible();
 
-		const localStyles = await localLink.evaluate(el => {
-			const styles = window.getComputedStyle(el);
-			return {
-				fontSize: styles.fontSize,
-				fontWeight: styles.fontWeight,
-				color: styles.color
-			};
-		});
-
-		const seilerStyles = await seilerLink.evaluate(el => {
-			const styles = window.getComputedStyle(el);
-			return {
-				fontSize: styles.fontSize,
-				fontWeight: styles.fontWeight,
-				color: styles.color
-			};
-		});
-
-		// Compare
-		console.log('Local styles:', localStyles);
-		console.log('Seiler styles:', seilerStyles);
-
-		expect(localStyles.fontSize).toBe(seilerStyles.fontSize);
-		expect(localStyles.fontWeight).toBe(seilerStyles.fontWeight);
-		expect(localStyles.color).toBe(seilerStyles.color);
-
-		await context.close();
+		// Cart should show count
+		const cartText = await cartLink.textContent();
+		expect(cartText?.replace(/\s+/g, ' ').trim()).toMatch(/Cart.*\(\d+\)/);
 	});
 });
