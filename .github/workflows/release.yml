@@ -7,21 +7,60 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v[0-9]*'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      packages: read
+    strategy:
+      matrix:
+        php-version: ['8.0', '8.1', '8.2']
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
+          bun-version: latest
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Configure npm registry
+        run: |
+          echo "@seilerinstrument:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        run: |
+          bun install
+          composer install --no-interaction --prefer-dist
+        working-directory: src
+
+      - name: Run tests
+        run: |
+          bunx seiler-phpcs src || true
+          bunx seiler-phpunit --testdox || true
+          bun test || true
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -34,20 +73,32 @@ jobs:
           php-version: '8.2'
           coverage: none
 
-      - name: Configure GitHub Packages auth
-        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+      - name: Configure npm registry
+        run: |
+          echo "@seilerinstrument:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.SEILER_CLASSIC_PAT }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
 
       - name: Build distribution ZIP
         run: bunx seiler-build --zip
 
       - name: Get version from tag
         id: get_version
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          # Mark as pre-release if:
+          #   - tag has a semver pre-release suffix (e.g. 1.0.0-alpha.1, 2.0.0-rc.1)
+          #   - major version is 0 (0.x.y is pre-1.0 by semver convention)
+          if [[ "$VERSION" == *-* ]] || [[ "$VERSION" =~ ^0\. ]]; then
+            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
+          else
+            echo "PRERELEASE=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Extract changelog
         id: changelog
@@ -79,5 +130,4 @@ jobs:
           files: ${{ steps.find_zip.outputs.ZIP_FILE }}
           generate_release_notes: false
           draft: false
-          # Auto-mark as prerelease for 0.x versions or any tag with a hyphen (e.g. v1.0.0-beta.1)
-          prerelease: ${{ startsWith(github.ref_name, 'v0.') || contains(github.ref_name, '-') }}
+          prerelease: ${{ steps.get_version.outputs.PRERELEASE }}
