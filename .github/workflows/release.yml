@@ -37,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bun install
+          bun install --omit=optional
           composer install --no-interaction --prefer-dist
         working-directory: src
 
@@ -73,7 +73,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.SEILER_CLASSIC_PAT }}
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --omit=optional
 
       - name: Build distribution ZIP
         run: bunx seiler-build --zip
