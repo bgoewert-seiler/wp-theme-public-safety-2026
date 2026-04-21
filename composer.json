@@ -1,0 +1,41 @@
+{
+    "name": "seilerinstrument/wp-theme-seiler-2026",
+    "description": "Division-agnostic WordPress FSE block theme for Seiler Instrument & Mfg. Co., Inc.",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://github.com/SeilerInstrument/wp-theme-seiler-2026",
+    "authors": [
+        {
+            "name": "Seiler Instrument & Mfg. Co., Inc.",
+            "homepage": "https://seilerinst.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/SeilerInstrument/wp-theme-seiler-2026/issues",
+        "source": "https://github.com/SeilerInstrument/wp-theme-seiler-2026"
+    },
+    "require": {
+        "php": ">=8.3",
+        "composer/installers": "^1.0 || ^2.0"
+    },
+    "archive": {
+        "exclude": [
+            "/.github",
+            "/.claude",
+            "/.ddev",
+            "/.local",
+            "/.playwright-mcp",
+            "/node_modules",
+            "/tests",
+            "/bun.lock",
+            "/package.json",
+            "/package-lock.json",
+            "/webpack.config.js",
+            "/playwright.config.js",
+            "/phpunit.xml",
+            "/phpunit.unit.xml",
+            "/AGENTS.md",
+            "/CLAUDE.md"
+        ]
+    }
+}
