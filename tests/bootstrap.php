@@ -1,33 +1,38 @@
 <?php
 // @generated seiler-phpunit-setup
 /**
- * PHPUnit bootstrap for WordPress integration tests.
+ * PHPUnit bootstrap for integration tests via wp-load.
  *
- * Requires the WordPress test library to be installed. Typical setups:
- *   - wp-env:  WP_TESTS_DIR is pre-wired inside the container
- *   - ddev:    set WP_TESTS_DIR to /var/www/html/wp-content/plugins/wordpress-tests-lib
- *   - local:   run bin/install-wp-tests.sh, or point WP_TESTS_DIR at your checkout
+ * Boots real WordPress by including wp-load.php directly — no
+ * wordpress-tests-lib, no DB transaction rollback between tests, no
+ * install-wp-tests.sh. Right default for plugins/themes that just need WP
+ * loaded so they can call get_option(), instantiate WC_Product, etc.
+ *
+ * The plugin/theme must be activated in the running WP instance for its code
+ * to be available. ddev users: `wp-bootstrap` activates automatically on
+ * `ddev start`.
+ *
+ * Opt into the heavier wp-tests-lib flavor via
+ *   bunx seiler-phpunit-setup --integration-mode=wp-tests-lib
  */
 
-$tests_dir = getenv( 'WP_TESTS_DIR' );
+$wp_load = getenv( 'WP_LOAD_PATH' ) ?: '/var/www/html/wp-load.php';
 
-if ( ! $tests_dir ) {
-	$tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
-}
-
-if ( ! file_exists( $tests_dir . '/includes/functions.php' ) ) {
+if ( ! file_exists( $wp_load ) ) {
 	fwrite(
 		STDERR,
-		"Could not find the WordPress test library at {$tests_dir}\n" .
-		"Set WP_TESTS_DIR to the location of wordpress-tests-lib.\n"
+		"Could not find wp-load.php at {$wp_load}\n" .
+		"Set WP_LOAD_PATH to the correct location, or scaffold with\n" .
+		"  bunx seiler-phpunit-setup --integration-mode=wp-tests-lib\n" .
+		"to use the wordpress-tests-lib flavor instead.\n"
 	);
 	exit( 1 );
 }
 
-require_once $tests_dir . '/includes/functions.php';
+require $wp_load;
 
-tests_add_filter( 'muplugins_loaded', function () {
-	require dirname( __DIR__ ) . '/src/style.css';
-} );
-
-require $tests_dir . '/includes/bootstrap.php';
+// Optional project-local helpers (fakes, stubs, custom TestCase bases).
+$stubsFile = __DIR__ . '/stubs.php';
+if ( file_exists( $stubsFile ) ) {
+	require_once $stubsFile;
+}

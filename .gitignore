@@ -51,6 +51,13 @@ blocks/**/index.asset.php
 src/vendor/
 vendor-dev/
 
+# PHPUnit cache
+/.phpunit.cache/
+/.phpunit.result.cache
+
+# Root composer.lock — root composer.json is a package descriptor, not an app
+/composer.lock
+
 # Package manager lock files
 package-lock.json
 yarn.lock

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- @generated seiler-phpunit-setup -->
-<phpunit
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.0/phpunit.xsd"
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
+	cacheDirectory=".phpunit.cache"
 	beStrictAboutTestsThatDoNotTestAnything="true"
 	beStrictAboutOutputDuringTests="true"
-	verbose="true"
 >
 	<testsuites>
 		<testsuite name="seiler-2026-theme (integration)">
@@ -16,7 +17,7 @@
 			<directory suffix="Test.php">tests/</directory>
 		</testsuite>
 	</testsuites>
-	<coverage processUncoveredFiles="true">
+	<source>
 		<include>
 			<directory suffix=".php">src</directory>
 		</include>
@@ -24,5 +25,5 @@
 			<directory>src/vendor</directory>
 			<directory>src/vendor-dev</directory>
 		</exclude>
-	</coverage>
+	</source>
 </phpunit>
