@@ -232,3 +232,61 @@ jobs:
       - name: Stop ddev
         if: always()
         run: ddev stop
+
+  integration-playwright-wp-env:
+    runs-on: ubuntu-latest
+    needs: detect
+    if: needs.detect.outputs.wp-env == 'true' && needs.detect.outputs.playwright == 'true'
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Configure npm registry
+        run: |
+          echo "@seilerinstrument:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+        working-directory: src
+        if: hashFiles('src/composer.json') != ''
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps
+
+      - name: Start wp-env
+        run: bunx --package @wordpress/env wp-env start
+
+      - name: Run Playwright tests
+        run: bun run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-wp-env
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Stop wp-env
+        if: always()
+        run: bunx --package @wordpress/env wp-env stop
