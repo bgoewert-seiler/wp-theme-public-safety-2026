@@ -4,6 +4,30 @@
  */
 
 const { defineConfig, devices } = require('@playwright/test');
+const { execFileSync } = require('node:child_process');
+
+/**
+ * Resolve the base URL for Playwright tests.
+ *
+ * Priority:
+ *   1. PLAYWRIGHT_BASE_URL env var (CI / ad-hoc overrides)
+ *   2. `bun run --silent env:url` — reads from ddev at config load time
+ *   3. Static fallback so the config still loads when ddev isn't running
+ */
+function resolveBaseURL() {
+	if (process.env.PLAYWRIGHT_BASE_URL) return process.env.PLAYWRIGHT_BASE_URL;
+	try {
+		const out = execFileSync('bun', ['run', '--silent', 'env:url'], {
+			encoding: 'utf8',
+			stdio: ['ignore', 'pipe', 'ignore'],
+		}).trim();
+		const lastLine = out.split('\n').map((l) => l.trim()).filter(Boolean).pop();
+		if (lastLine && /^https?:\/\//.test(lastLine)) return lastLine;
+	} catch {
+		// ddev not running or script errored — fall through to static default
+	}
+	return 'https://seiler-2026-theme.ddev.site';
+}
 
 module.exports = defineConfig({
 	testDir: './tests',
@@ -25,8 +49,8 @@ module.exports = defineConfig({
 
 	// Shared settings for all projects
 	use: {
-		// Base URL for navigation
-		baseURL: 'https://localhost:8443',
+		// Base URL for navigation (resolves via bun run env:url; override with PLAYWRIGHT_BASE_URL)
+		baseURL: resolveBaseURL(),
 
 		// Ignore HTTPS errors for local development
 		ignoreHTTPSErrors: true,
@@ -49,12 +73,13 @@ module.exports = defineConfig({
 		},
 	],
 
-	// Run local dev server before starting tests
-	// Uncomment if you want tests to start wp-env automatically
+	// Run local dev server before starting tests.
+	// Uncomment if you want tests to start ddev automatically.
 	// webServer: {
-	// 	command: 'npm run env:start',
-	// 	url: 'http://seiler.local:8890',
+	// 	command: 'bun run env:start',
+	// 	url: 'https://seiler-2026-theme.ddev.site',
 	// 	timeout: 120 * 1000,
 	// 	reuseExistingServer: !process.env.CI,
+	// 	ignoreHTTPSErrors: true,
 	// },
 });
